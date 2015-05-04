@@ -155,10 +155,12 @@ c.width = 600;
 c.height = 620;
 //document.body.appendChild(c);
 var ctx = c.getContext("2d");
+var renderwait;
 Array.prototype.slice.call(document.querySelectorAll("input,textarea")).forEach(function(i) {
   i.oninput = function() {
     if (i.nodeName.toLowerCase() == "input") { i.setAttribute("value", i.value); } else { i.textContent = i.value; }
-    renderHTML();
+    clearTimeout(renderwait);
+    renderwait = setTimeout(renderHTML, 500);
   };
 });
 renderHTML();
