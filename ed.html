@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Make your own #EdStone</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300' rel='stylesheet' type='text/css'>
+    <script src="http://cburgmer.github.io/rasterizeHTML.js/rasterizeHTML.allinone.js"></script>
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+}
+section {
+    text-transform: uppercase;
+    font-family: "Arial", "Open Sans", sans-serif;
+    position: absolute;
+  top: 21px;
+  left: 64px;
+  width: 387px;
+  height: 544px;
+  perspective: 400px;
+}
+div {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+  xbackground: rgba(255,0,0,0.2);
+  transform: rotateX(7deg) rotateY(-1deg);
+  transform-origin: -74% 77% 0px;
+  padding: 0 37px;
+}
+
+input, textarea {
+        text-transform: uppercase;
+    background: transparent;
+    border-width: 0;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+
+}
+h1 {
+        margin: 0;
+
+}
+h1 input {
+    color: #5c626e;
+    font-size: 24px;
+    line-height: 25px;
+    font-weight: bold;
+}
+ol {
+    margin: 0;
+      padding: 12px 25px;
+  width: 60%;
+    counter-reset: item;
+    list-style-type: none;
+}
+li {
+    margin-bottom: 7px;
+    display: block;
+    position: relative;
+}
+li textarea {
+  font-size: 17px;
+    font-family: "Arial", "Open Sans", sans-serif;
+    width: 100%;
+    color: rgba(57,57,57,0.9);
+    height: 37px;
+    resize: none;
+}
+li:before { 
+    content: counter(item) "  "; 
+    counter-increment: item;
+    position: absolute;
+  left: -25px;
+  top: 50%;
+  margin-top: -12px;
+  font-weight: bold;
+}
+textarea:focus, input:focus {
+    outline-color: greenyellow;
+    background: rgba(0,255,0,0.2);
+}
+    p, h2 { font-family: sans-serif; margin: 5px 20px; }
+    footer { color: #bbb; text-align: right;}
+    footer a { color: #999; }
+    .photo, .photo a { color: #bbb; }
+    #dl {
+      padding: 12px;
+      font-family: sans-serif;
+      background: #dd4814;
+      color: #f7f6f5;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+    #dlp {
+      padding: 20px 0;
+    }
+</style>
+</head>
+<body>
+<article>
+<img src="ed.jpg">
+<section><div>
+<h1><input value="A better plan."></h1>
+<h1><input value="A better future."></h1>
+<ol>
+    <li><textarea>a strong economic foundation</textarea></li>
+    <li><textarea style="height:57px">higher living standards for working families</textarea></li>
+    <li><textarea>an NHS with the time to care</textarea></li>
+    <li><textarea>controls on immigration</textarea></li>
+    <li><textarea style="width: 232px; height: 66px;">a country where the next generation can do better than this</textarea></li>
+    <li><textarea>homes to buy and action on rents</textarea></li>
+</ol>
+</div></section>
+<img src="actualed.png" style="top:123px; left:296px; position: absolute">
+</article>
+    <h2>Your own Ed Stone</h2>
+    <p>Just... edit the text.</p>
+    <p>You know you want to.</p>
+    <p>I couldn't possibly condone downloading an image of the amusing changes you come up with and, say, posting it to Twitter with the hashtag <a href="https://twitter.com/hashtag/EdStone">#EdStone</a>.</p>
+    <p id="dlp"><a href="#" download="edstone.png" id="dl">Download your created image</a></p>
+    <p class="photo">Image from <a href="http://www.theguardian.com/politics/blog/live/2015/may/03/election-2015-live-nick-clegg-and-nigel-farage-interviewed-on-the-andrew-marr-show">the Guardian</a>, which I will of course take down if they don't like it.</p>
+    <script>
+    function renderHTML() {
+          ctx.fillStyle = "red";
+          ctx.fillRect(0,0,600,620);
+          var html = "<style>" + document.querySelector("style").textContent + "</style>" + document.querySelector("article").innerHTML;
+          rasterizeHTML.drawHTML(html, c);
+          console.log("changed html", html);
+          setTimeout(function() { document.getElementById("dl").href = c.toDataURL(); }, 500);
+    }
+      var c = document.createElement("canvas");
+      c.width = 600;
+      c.height = 620;
+      //document.body.appendChild(c);
+      var ctx = c.getContext("2d");
+      Array.prototype.slice.call(document.querySelectorAll("input,textarea")).forEach(function(i) {
+        i.oninput = function() {
+          if (i.nodeName.toLowerCase() == "input") { i.setAttribute("value", i.value); } else { i.textContent = i.value; }
+          renderHTML();
+        };
+      });
+      renderHTML();
+
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-331575-1', 'auto');
+ga('send', 'pageview');
+
+    </script>
+    <footer>this is an <a href="http://twitter.com/sil">@sil</a> thing. Thanks to <a href="http://cburgmer.github.io/rasterizeHTML.js/">rasterizeHTML.js</a></footer>
+</body>
+</html>
