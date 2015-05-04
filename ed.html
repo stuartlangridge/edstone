@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Make your own #EdStone</title>
-    <meta name="viewport" content="width=device-width, user-scalable=no">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300' rel='stylesheet' type='text/css'>
-    <script src="http://cburgmer.github.io/rasterizeHTML.js/rasterizeHTML.allinone.js"></script>
+<title>Make your own #EdStone</title>
+<meta name="viewport" content="width=620, user-scalable=no">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="http://css-spinners.com/css/spinner/wobblebar.css" type="text/css">
+<script src="http://cburgmer.github.io/rasterizeHTML.js/rasterizeHTML.allinone.js"></script>
 <style>
 html, body {
     margin: 0;
@@ -81,21 +82,26 @@ textarea:focus, input:focus {
     outline-color: greenyellow;
     background: rgba(0,255,0,0.2);
 }
-    p, h2 { font-family: sans-serif; margin: 5px 20px; }
-    footer { color: #bbb; text-align: right;}
-    footer a { color: #999; }
-    .photo, .photo a { color: #bbb; }
-    #dl {
-      padding: 12px;
-      font-family: sans-serif;
-      background: #dd4814;
-      color: #f7f6f5;
-      border-radius: 4px;
-      text-decoration: none;
-    }
-    #dlp {
-      padding: 20px 0;
-    }
+p, h2 { font-family: sans-serif; margin: 5px 20px; }
+footer { color: #bbb; text-align: right;}
+footer a { color: #999; }
+.photo, .photo a { color: #bbb; }
+#dl {
+    padding: 12px;
+    font-family: sans-serif;
+    background: #dd4814;
+    color: #f7f6f5;
+    border-radius: 4px;
+    text-decoration: none;
+}
+#dl.wobblebar {
+    background: #888;
+    color: #333;
+    text-decoration: line-through;
+}
+#dlp {
+    padding: 20px 0;
+}
 </style>
 </head>
 <body>
@@ -115,42 +121,56 @@ textarea:focus, input:focus {
 </div></section>
 <img src="actualed.png" style="top:123px; left:296px; position: absolute">
 </article>
-    <h2>Your own Ed Stone</h2>
-    <p>Just... edit the text.</p>
-    <p>You know you want to.</p>
-    <p>I couldn't possibly condone downloading an image of the amusing changes you come up with and, say, posting it to Twitter with the hashtag <a href="https://twitter.com/hashtag/EdStone">#EdStone</a>.</p>
-    <p id="dlp"><a href="#" download="edstone.png" id="dl">Download your created image</a></p>
-    <p class="photo">Image from <a href="http://www.theguardian.com/politics/blog/live/2015/may/03/election-2015-live-nick-clegg-and-nigel-farage-interviewed-on-the-andrew-marr-show">the Guardian</a>, which I will of course take down if they don't like it.</p>
-    <script>
-    function renderHTML() {
-          ctx.fillStyle = "red";
-          ctx.fillRect(0,0,600,620);
-          var html = "<style>" + document.querySelector("style").textContent + "</style>" + document.querySelector("article").innerHTML;
-          rasterizeHTML.drawHTML(html, c);
-          console.log("changed html", html);
-          setTimeout(function() { document.getElementById("dl").href = c.toDataURL(); }, 500);
+<h2>Your own Ed Stone</h2>
+<p>Just... edit the text.</p>
+<p>You know you want to.</p>
+<p>I couldn't possibly condone downloading an image of the amusing changes you come up with and, say, posting it to Twitter with the hashtag <a href="https://twitter.com/hashtag/EdStone">#EdStone</a>.</p>
+<p id="dlp"><a href="#" download="edstone.png" id="dl">Download your created image</a></p>
+<p class="photo">Image from <a href="http://www.theguardian.com/politics/blog/live/2015/may/03/election-2015-live-nick-clegg-and-nigel-farage-interviewed-on-the-andrew-marr-show">the Guardian</a>, which I will of course take down if they don't like it.</p>
+<script>
+var wait;
+function renderHTML() {
+    function isUpdated() { 
+        var after = c.toDataURL();
+        if (before == after) {
+            wait = setTimeout(isUpdated, 500);
+            return;
+        }
+        document.getElementById("dl").href = c.toDataURL(); 
+        document.getElementById("dl").className = "";
     }
-      var c = document.createElement("canvas");
-      c.width = 600;
-      c.height = 620;
-      //document.body.appendChild(c);
-      var ctx = c.getContext("2d");
-      Array.prototype.slice.call(document.querySelectorAll("input,textarea")).forEach(function(i) {
-        i.oninput = function() {
-          if (i.nodeName.toLowerCase() == "input") { i.setAttribute("value", i.value); } else { i.textContent = i.value; }
-          renderHTML();
-        };
-      });
-      renderHTML();
+    document.getElementById("dl").className = "wobblebar";
+    document.getElementById("dl").href = "#";
+    ctx.fillStyle = "red";
+    ctx.fillRect(0,0,600,620);
+    var before = c.toDataURL();
+    var html = "<style>" + document.querySelector("style").textContent + "</style>" + document.querySelector("article").innerHTML;
+    rasterizeHTML.drawHTML(html, c);
+    console.log("changed html");
+    clearTimeout(wait);
+    wait = setTimeout(isUpdated, 500);
+}
+var c = document.createElement("canvas");
+c.width = 600;
+c.height = 620;
+//document.body.appendChild(c);
+var ctx = c.getContext("2d");
+Array.prototype.slice.call(document.querySelectorAll("input,textarea")).forEach(function(i) {
+  i.oninput = function() {
+    if (i.nodeName.toLowerCase() == "input") { i.setAttribute("value", i.value); } else { i.textContent = i.value; }
+    renderHTML();
+  };
+});
+renderHTML();
 
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 ga('create', 'UA-331575-1', 'auto');
 ga('send', 'pageview');
 
-    </script>
-    <footer>this is an <a href="http://twitter.com/sil">@sil</a> thing. Thanks to <a href="http://cburgmer.github.io/rasterizeHTML.js/">rasterizeHTML.js</a></footer>
+</script>
+<footer>this is an <a href="http://twitter.com/sil">@sil</a> thing. Thanks to <a href="http://cburgmer.github.io/rasterizeHTML.js/">rasterizeHTML.js</a></footer>
 </body>
 </html>
